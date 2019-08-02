@@ -5,8 +5,8 @@ import com.example.navdrawer.data.PersonDao
 
 class SavePersonNetworkUseCase(private val personDao: PersonDao) {
 
-    fun execute(person: Person): Long {
+    fun execute(person: Person) {
         person.apply { synced = true }
-        return personDao.insertPerson(person)
+        personDao.updatePerson(person)
     }
 }
