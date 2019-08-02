@@ -11,8 +11,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.work.WorkManager
 import com.example.navdrawer.R
-import com.example.navdrawer.utils.SerializerHelper
 import com.example.navdrawer.data.Person
+import com.example.navdrawer.utils.SerializerHelper
 import com.example.navdrawer.workers.PERSON_OUT
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.paulinasadowska.rxworkmanagerobservers.extensions.toWorkDatasObservable
@@ -32,7 +32,8 @@ open class MainActivity : AppCompatActivity() {
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { _ ->
             val personName = etName?.text.toString()
-            val person = Person(name = personName, age = 10, synced = false)
+            val personId = etId?.text.toString()
+            val person = Person(id = personId.toLong(), name = personName, age = 10, synced = false)
             mainViewModel.createNewPerson(person)
         }
 
@@ -44,9 +45,7 @@ open class MainActivity : AppCompatActivity() {
                 .subscribe {
                     mainViewModel.uploadNewPerson(
                         SerializerHelper.deserializeJson(
-                            it.getString(
-                                PERSON_OUT
-                            )!!
+                            it.getString(PERSON_OUT)!!
                         )
                     )
                 }
@@ -62,6 +61,7 @@ open class MainActivity : AppCompatActivity() {
 
         mainViewModel.syncedList.observe(this, Observer {
             bindNetworkList(it)
+            mainViewModel.getUnsycList()
         })
 
         mainViewModel.getUnsycList()

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
     tableName = "persons"
 )
 data class Person(
-    @PrimaryKey(autoGenerate = true) val id: Long? = null,
+    @PrimaryKey val id: Long? = null,
     var name: String? = null, var age: Int? = null, var synced: Boolean? = false
 ) {
 
